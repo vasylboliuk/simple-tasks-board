@@ -1,3 +1,3 @@
-# appointment-scheduler
+# Simple Tasks Board
 
-## Some header
+## Table of Content

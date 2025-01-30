@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "appoinment-scheduler"
-version = "0.3.0"
-description = "Appoinment Scheduller API PET project"
+name = "simple-tasks-board"
+version = "0.1.0"
+description = "Simple Tasks Board API project"
 authors = ["Vasyl Boliuk"]
 
 [tool.poetry.dependencies]
@@ -32,7 +32,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.commitizen]
-version="0.3.0"
+version="0.1.0"
 version_files = [
     "src/core/__version__.py:VERSION",
     "pyproject.toml:^version"

@@ -1,12 +1,13 @@
+"""Alembic migration env.py module."""
+
 import os
 from logging.config import fileConfig
 
 from dotenv import load_dotenv
-from sqlalchemy import engine_from_config, create_engine
-from sqlalchemy import pool
+from sqlalchemy import create_engine, engine_from_config, pool
 
 from alembic import context
-
+from src.models import models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -19,16 +20,9 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from src.models import models
 target_metadata = models.Base.metadata
 
-
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
-
-# Load
+# Load system variables
 load_dotenv()
 # Build database URL using environment variables
 DB_USER = os.getenv("DB_USER")
@@ -41,7 +35,6 @@ DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_POR
 
 engine = create_engine(DATABASE_URL)
 
-config = context.config
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 
@@ -57,7 +50,6 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-
     context.configure(
         url=DATABASE_URL,
         target_metadata=target_metadata,
@@ -83,9 +75,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

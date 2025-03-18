@@ -10,15 +10,19 @@ fastapi = "^0.112.0"
 uvicorn = {extras = ["standard"], version = "^0.30.6"}
 pydantic = "^2.8.2"
 pydantic-settings = "^2.4.0"
+psycopg2 = "^2.9.10"
 colorlog = "^6.8.0"
 
 
 [tool.poetry.group.dev.dependencies]
+alembic = "^1.14.1"
 pre-commit = "^3.8.0"
 ruff = "^0.5.5"
 bandit = "^1.7.9"
 commitizen = "^3.28.0"
 git-changelog = "^2.5.2"
+
+
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.3"

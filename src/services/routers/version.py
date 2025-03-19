@@ -5,7 +5,7 @@ import logging
 from fastapi import APIRouter
 
 from src.core.__version__ import VERSION
-from src.services.models.version import VersionResponse
+from src.models.version import VersionResponse
 
 router = APIRouter()
 

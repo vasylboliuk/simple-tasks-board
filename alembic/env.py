@@ -1,12 +1,11 @@
 """Alembic migration env.py module."""
 
-import os
 from logging.config import fileConfig
 
-from dotenv import load_dotenv
-from sqlalchemy import create_engine, engine_from_config, pool
+from sqlalchemy import create_engine
 
 from alembic import context
+from src.common.config.settings import DatabaseSettings
 from src.models import models
 
 # this is the Alembic Config object, which provides
@@ -22,20 +21,11 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 target_metadata = models.Base.metadata
 
-# Load system variables
-load_dotenv()
-# Build database URL using environment variables
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_PORT = os.getenv("DB_PORT", "5432")
-DB_NAME = os.getenv("DB_NAME")
+# Use pydentic Database Settings
+database_setting = DatabaseSettings()
 
-DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-
-engine = create_engine(DATABASE_URL)
-
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
+# Create engine
+engine = create_engine(database_setting.get_url())
 
 
 def run_migrations_offline() -> None:
@@ -51,7 +41,7 @@ def run_migrations_offline() -> None:
 
     """
     context.configure(
-        url=DATABASE_URL,
+        url=database_setting.get_url(),
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -68,11 +58,7 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
-    )
+    connectable = engine
 
     with connectable.connect() as connection:
         context.configure(connection=connection, target_metadata=target_metadata)

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "simple-tasks-board"
-version = "0.1.0"
+version = "0.2.0a1"
 description = "Simple Tasks Board API project"
 authors = ["Vasyl Boliuk"]
 package-mode = false
@@ -37,7 +37,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.commitizen]
-version="0.1.0"
+version="0.2.0a1"
 version_files = [
     "src/core/__version__.py:VERSION",
     "pyproject.toml:^version"

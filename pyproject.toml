@@ -13,6 +13,7 @@ pydantic = "^2.8.2"
 pydantic-settings = "^2.4.0"
 psycopg2 = "^2.9.10"
 colorlog = "^6.8.0"
+infisicalsdk = "^1.0.8"
 
 
 [tool.poetry.group.dev.dependencies]

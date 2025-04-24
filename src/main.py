@@ -5,8 +5,10 @@ import os
 import sys
 
 import uvicorn
+from dotenv import load_dotenv
 from fastapi import FastAPI
 
+from src.common.config.settings import AuthSettings
 from src.core.configs import Settings
 from src.core.constants import CommonPaths
 from src.core.logging_manager import LoggingManager
@@ -24,9 +26,14 @@ def main():
     :return:
     """
     os.makedirs(CommonPaths.log_path, exist_ok=True)
+    load_dotenv()
     settings = Settings()
     sys.path.append(str(CommonPaths.project_root))
     LoggingManager.setup_logger()
+
+    logging.info("Setup Authentication...")
+    auth_settings = AuthSettings()
+    auth_settings.load_infisical_secrets()
 
     logging.info("Starting application...")
     uvicorn.run(

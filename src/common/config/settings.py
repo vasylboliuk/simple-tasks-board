@@ -1,8 +1,9 @@
 """File stores Settings."""
 
 from enum import StrEnum
-from typing import Optional
+from typing import List, Optional
 
+from infisical_sdk import BaseSecret, InfisicalSDKClient
 from pydantic import BaseModel, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
@@ -57,3 +58,31 @@ class DatabaseSettings(BaseSettings):
             database=self.database_name,
         )
         return url
+
+
+class AuthSettings(BaseSettings):
+    """Authentication settings."""
+
+    model_config = SettingsConfigDict(env_prefix="INFISICAL_", env_file=".env")
+    host: str
+    environment_slug: str
+    token: SecretStr = Field(exclude=True, repr=False)
+    project_id: str
+    jwt_algorithm: str = "HS256"
+    token_expire_minutes: int = 30
+
+    def load_infisical_secrets(self) -> list[BaseSecret]:
+        """Load infisical secrets."""
+        # Initialize the client
+        client = InfisicalSDKClient(
+            host=self.host,
+            token=self.token.get_secret_value(),
+            cache_ttl=300,  # `None` to disable caching
+        )
+        # Use the SDK to interact with Infisical
+        path = "/"
+        secrets = client.secrets.list_secrets(
+            project_id=self.project_id, environment_slug=self.environment_slug, secret_path=path
+        )
+        secrets_res: List = secrets.secrets
+        return secrets_res

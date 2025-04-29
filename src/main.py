@@ -8,7 +8,7 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from src.common.config.settings import AuthSettings
+from src.common.config.settings import InfisicalSettings
 from src.core.configs import Settings
 from src.core.constants import CommonPaths
 from src.core.logging_manager import LoggingManager
@@ -32,8 +32,8 @@ def main():
     LoggingManager.setup_logger()
 
     logging.info("Setup Authentication...")
-    auth_settings = AuthSettings()
-    auth_settings.load_infisical_secrets()
+    infisical_settings = InfisicalSettings()
+    infisical_settings.load_infisical_secrets()
 
     logging.info("Starting application...")
     uvicorn.run(

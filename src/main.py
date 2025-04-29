@@ -8,10 +8,11 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from src.common.config.settings import InfisicalSettings
+from src.common.constants import CommonPaths
 from src.core.configs import Settings
-from src.core.constants import CommonPaths
+from src.core.infisical_client import InfisicalClient
 from src.core.logging_manager import LoggingManager
+from src.core.settings import InfisicalSettings
 from src.services.routers.version import router as version_router
 
 app = FastAPI()
@@ -33,7 +34,9 @@ def main():
 
     logging.info("Setup Authentication...")
     infisical_settings = InfisicalSettings()
-    infisical_settings.load_infisical_secrets()
+    path = "/"
+    infisical_client = InfisicalClient.load_from_settings(infisical_settings)
+    infisical_client.get_secrets(path)
 
     logging.info("Starting application...")
     uvicorn.run(

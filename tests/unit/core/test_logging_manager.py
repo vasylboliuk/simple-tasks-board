@@ -6,7 +6,7 @@ import os
 import pytest
 from assertpy import assert_that, contents_of
 
-from src.core.constants import CommonPaths
+from src.common.constants import CommonPaths
 from src.core.logging_manager import LoggingManager
 
 

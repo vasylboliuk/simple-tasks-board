@@ -57,3 +57,17 @@ class DatabaseSettings(BaseSettings):
             database=self.database_name,
         )
         return url
+
+
+class InfisicalSettings(BaseSettings):
+    """Infisical settings used for managing configuration and secrets."""
+
+    model_config = SettingsConfigDict(env_prefix="INFISICAL_", env_file=".env")
+
+    host: str
+    environment_slug: str
+    client_id: SecretStr = Field(exclude=True, repr=False)
+    client_secret: SecretStr = Field(exclude=True, repr=False)
+    project_id: str
+    jwt_algorithm: str = "HS256"
+    token_expire_minutes: int = 30

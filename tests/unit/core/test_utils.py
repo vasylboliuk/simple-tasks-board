@@ -3,7 +3,7 @@
 import pytest
 from assertpy import assert_that
 
-from src.core.constants import CommonPaths
+from src.common.constants import CommonPaths
 from src.core.utils import FileUtil
 
 
